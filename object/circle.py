@@ -159,28 +159,10 @@ class Circle:
             raise TypeError
 
         # functionality ------------------------------------------------------------- #
-        if self.__alpha == 255:
-            pygame.draw.circle(
-                surface, self.__colour, [*(self.centre + offset)], self.__radius, self.__width
-            )
-        else:
-            temp_surface = self.rect.pygame_surface().convert_alpha()
-
-            temp_surface.fill([0, 0, 0, 0])
-            temp_surface.set_alpha(self.__alpha)
-
-            pygame.draw.circle(
-                temp_surface,
-                self.__colour,
-                [*self.rect.size / 2],
-                self.__radius,
-                self.__width,
-            )
-
-            surface.blit(
-                temp_surface,
-                [
-                    self.x - self.rect.width / 2 + offset.x,
-                    self.y - self.rect.height / 2 + offset.y,
-                ],
-            )
+        pygame.draw.circle(
+            surface,
+            [*self.__colour, max(self.__alpha, 0)],
+            [*(self.centre + offset)],
+            self.__radius,
+            self.__width,
+        )

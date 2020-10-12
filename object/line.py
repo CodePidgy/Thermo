@@ -181,40 +181,13 @@ class Line:
             raise TypeError
 
         # functionality ------------------------------------------------------------- #
-        if self.__alpha == 255:
-            pygame.draw.line(
-                surface,
-                self.__colour,
-                [*(self.__start + offset)],
-                [*(self.__end + offset)],
-                self.__width,
-            )
-        else:
-            sort = self.sorted_x()
-
-            temp_surface = sort.rect.pygame_surface().convert_alpha()
-
-            temp_surface.fill([0, 0, 0, 0])
-            temp_surface.set_alpha(self.__alpha)
-
-            if sort.gradient >= math.radians(0):
-                pygame.draw.line(
-                    temp_surface,
-                    self.__colour,
-                    [0, 0],
-                    [sort.rect.width - 1, sort.rect.height - 1],
-                    self.__width,
-                )
-            else:
-                pygame.draw.line(
-                    temp_surface,
-                    self.__colour,
-                    [0, sort.rect.height - 1],
-                    [sort.rect.width - 1, 0],
-                    self.__width,
-                )
-
-            surface.blit(temp_surface, [*(sort.rect.top_left + offset)])
+        pygame.draw.line(
+            surface,
+            [*self.__colour, max(self.__alpha, 0)],
+            [*(self.__start + offset)],
+            [*(self.__end + offset)],
+            self.__width,
+        )
 
     def intersect(self, other):
         # sanity checks ------------------------------------------------------------- #

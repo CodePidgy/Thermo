@@ -22,6 +22,23 @@ class Rect:
 
     # properties -------------------------------------------------------------------- #
     @property
+    def alpha(self):
+        # functionality ------------------------------------------------------------- #
+        return self.__alpha
+
+    @alpha.setter
+    def alpha(self, alpha):
+        # sanity checks ------------------------------------------------------------- #
+        if type(alpha) not in (float, int):
+            raise TypeError
+
+        # functionality ------------------------------------------------------------- #
+        if type(alpha) != int:
+            alpha = int(alpha)
+
+        self.__alpha = alpha
+
+    @property
     def bottom(self):
         # functionality ------------------------------------------------------------- #
         return self.top + self.height
@@ -174,7 +191,9 @@ class Rect:
         return Rect(self.left, self.top, self.width, self.height)
 
     def draw(self, surface):
-        pygame.draw.rect(surface, self.__colour, self.pygame_rect())
+        pygame.draw.rect(
+            surface, [*self.__colour, max(self.__alpha, 0)], self.pygame_rect()
+        )
 
     def normalise(self):
         # functionality ------------------------------------------------------------- #
