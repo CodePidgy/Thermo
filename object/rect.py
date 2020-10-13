@@ -76,6 +76,12 @@ class Rect:
         if type(colour) != tuple:
             colour = tuple(colour)
 
+        self.__alpha = 255
+
+        if len(colour) != 3:
+            self.__alpha = colour[3]
+            colour = colour[:3]
+
         self.__colour = colour
 
     @property
