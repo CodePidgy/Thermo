@@ -489,7 +489,7 @@ class Vector:
 
     def snap(self, other):
         # sanity checks ------------------------------------------------------------- #
-        if type(other) != type(self):
+        if type(other) not in (int, type(self)):
             raise TypeError
 
         # functionality ------------------------------------------------------------- #
@@ -500,10 +500,13 @@ class Vector:
 
     def snapped(self, other):
         # sanity checks ------------------------------------------------------------- #
-        if type(other) != type(self):
+        if type(other) not in (int, type(self)):
             raise TypeError
 
         # functionality ------------------------------------------------------------- #
+        if type(other) != type(self):
+            other = Vector(other, other)
+
         step = lambda value, other: math.floor(value / other + 0.5) * other
 
         return Vector(step(self.__x, other.x), step(self.__y, other.y))

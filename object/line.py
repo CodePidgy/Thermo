@@ -104,31 +104,37 @@ class Line:
         # functionality ------------------------------------------------------------- #
         sort = self.sorted_x()
 
-        if sort.gradient <= math.radians(-45):
-            left = int(sort.start.x - self.__width // 2)
-            width = int(sort.end.x - left + self.__width // 2 + 1)
-            top = int(sort.end.y)
-            height = int(sort.start.y - top + 1)
-        if sort.gradient < 0 and sort.gradient > math.radians(-45):
-            left = int(sort.start.x)
-            width = int(sort.end.x - left + 1)
-            top = int(sort.end.y - self.__width // 2)
-            height = int(sort.start.y - top + self.__width // 2 + 1)
+        sort.start.snap(1)
+        sort.end.snap(1)
+
         if sort.gradient == 0:
             left = int(sort.start.x)
             width = int(sort.end.x - sort.start.x + 1)
-            top = int(sort.start.y - self.__width // 2)
+            top = int(sort.start.y - self.__width // 2) - (self.__width % 2 - 1)
             height = int(self.__width)
-        if sort.gradient > 0 and sort.gradient < math.radians(45):
-            left = int(sort.start.x)
-            width = int(sort.end.x - left + 1)
-            top = int(sort.start.y - self.__width // 2)
-            height = int(sort.end.y - top + self.__width // 2 + 1)
-        if sort.gradient >= math.radians(45):
-            left = int(sort.start.x - self.__width // 2)
-            width = int(sort.end.x - left + self.__width // 2 + 1)
-            top = int(sort.start.y)
-            height = int(sort.end.y - top + 1)
+        else:
+            if not abs(sort.start.x - sort.end.x) <= abs(sort.start.y - sort.end.y):
+                if sort.gradient > 0:
+                    left = int(sort.start.x)
+                    width = int(sort.end.x - left + 1)
+                    top = int(sort.start.y - self.__width // 2) - (self.__width % 2 - 1)
+                    height = int(sort.end.y - top + self.__width // 2 + 1)
+                else:
+                    left = int(sort.start.x)
+                    width = int(sort.end.x - left + 1)
+                    top = int(sort.end.y - self.__width // 2) - (self.__width % 2 - 1)
+                    height = int(sort.start.y - top + self.__width // 2 + 1)
+            else:
+                if sort.gradient > 0:
+                    left = int(sort.start.x - self.__width // 2) - (self.__width % 2 - 1)
+                    width = int(sort.end.x - left + self.__width // 2 + 1)
+                    top = int(sort.start.y)
+                    height = int(sort.end.y - top + 1)
+                else:
+                    left = int(sort.start.x - self.__width // 2) - (self.__width % 2 - 1)
+                    width = int(sort.end.x - left + self.__width // 2 + 1)
+                    top = int(sort.end.y)
+                    height = int(sort.start.y - top + 1)
 
         return Rect(left, top, width, height)
 
