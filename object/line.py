@@ -27,16 +27,13 @@ class Line:
     # properties -------------------------------------------------------------------- #
     @property
     def alpha(self):
-        # functionality ------------------------------------------------------------- #
         return self.__alpha
 
     @alpha.setter
     def alpha(self, alpha):
-        # sanity checks ------------------------------------------------------------- #
         if type(alpha) not in (float, int):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         if type(alpha) != int:
             alpha = int(alpha)
 
@@ -44,19 +41,16 @@ class Line:
 
     @property
     def colour(self):
-        # functionality ------------------------------------------------------------- #
         return self.__colour
 
     @colour.setter
     def colour(self, colour):
-        # sanity checks ------------------------------------------------------------- #
         if type(colour) not in (list, tuple):
             raise TypeError
 
         if len(colour) > 4 or len(colour) < 3:
             raise Exception
 
-        # functionality ------------------------------------------------------------- #
         if type(colour) != tuple:
             colour = tuple(colour)
 
@@ -70,100 +64,35 @@ class Line:
 
     @property
     def end(self):
-        # functionality ------------------------------------------------------------- #
         return self.__end
 
     @end.setter
     def end(self, end):
-        # sanity checks ------------------------------------------------------------- #
         if type(end) != type(Vector()):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         self.__end = end
 
     @property
-    def gradient(self):
-        # functionality ------------------------------------------------------------- #
-        return (self.__end - self.__start).angle
-
-    @property
-    def length(self):
-        # functionality ------------------------------------------------------------- #
-        return math.sqrt(
-            (self.__end.x - self.__start.x) ** 2 + (self.__end.y - self.__start.y) ** 2
-        )
-
-    @property
-    def middle(self):
-        # functionality ------------------------------------------------------------- #
-        return Vector(*(self.start + self.end) / 2)
-
-    @property
-    def rect(self):
-        # functionality ------------------------------------------------------------- #
-        sort = self.sorted_x()
-
-        sort.start.snap(1)
-        sort.end.snap(1)
-
-        if sort.gradient == 0:
-            left = int(sort.start.x)
-            width = int(sort.end.x - sort.start.x + 1)
-            top = int(sort.start.y - self.__width // 2) - (self.__width % 2 - 1)
-            height = int(self.__width)
-        else:
-            if not abs(sort.start.x - sort.end.x) <= abs(sort.start.y - sort.end.y):
-                if sort.gradient > 0:
-                    left = int(sort.start.x)
-                    width = int(sort.end.x - left + 1)
-                    top = int(sort.start.y - self.__width // 2) - (self.__width % 2 - 1)
-                    height = int(sort.end.y - top + self.__width // 2 + 1)
-                else:
-                    left = int(sort.start.x)
-                    width = int(sort.end.x - left + 1)
-                    top = int(sort.end.y - self.__width // 2) - (self.__width % 2 - 1)
-                    height = int(sort.start.y - top + self.__width // 2 + 1)
-            else:
-                if sort.gradient > 0:
-                    left = int(sort.start.x - self.__width // 2) - (self.__width % 2 - 1)
-                    width = int(sort.end.x - left + self.__width // 2 + 1)
-                    top = int(sort.start.y)
-                    height = int(sort.end.y - top + 1)
-                else:
-                    left = int(sort.start.x - self.__width // 2) - (self.__width % 2 - 1)
-                    width = int(sort.end.x - left + self.__width // 2 + 1)
-                    top = int(sort.end.y)
-                    height = int(sort.start.y - top + 1)
-
-        return Rect(left, top, width, height)
-
-    @property
     def start(self):
-        # functionality ------------------------------------------------------------- #
         return self.__start
 
     @start.setter
     def start(self, start):
-        # sanity checks ------------------------------------------------------------- #
         if type(start) != type(Vector()):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         self.__start = start
 
     @property
     def width(self):
-        # functionality ------------------------------------------------------------- #
         return self.__width
 
     @width.setter
     def width(self, width):
-        # sanity checks ------------------------------------------------------------- #
         if type(width) not in (float, int):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         if type(width) != int:
             width = int(width)
 
@@ -171,22 +100,18 @@ class Line:
 
     # methods ----------------------------------------------------------------------- #
     def angle_to_normal(self, plane):
-        # sanity checks ------------------------------------------------------------- #
         if type(plane) != type(self):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
-        return math.radians(90) - (self.gradient - plane.gradient)
+        return math.radians(90) - (self.gradient() - plane.gradient())
 
     def draw(self, surface, offset=Vector(0, 0)):
-        # sanity checks ------------------------------------------------------------- #
         if type(surface) != type(pygame.Surface((0, 0))):
             raise TypeError
 
         if type(offset) != type(Vector()):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         pygame.draw.line(
             surface,
             [*self.__colour, max(self.__alpha, 0)],
@@ -195,12 +120,13 @@ class Line:
             self.__width,
         )
 
+    def gradient(self):
+        return self.__end.angle_to(self.__start)
+
     def intersect(self, other):
-        # sanity checks ------------------------------------------------------------- #
         if type(other) != type(self):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         def orientation(a, b, c):
             val = (float(b.y - a.y) * (c.x - b.x)) - (float(b.x - a.x) * (c.y - b.y))
 
@@ -241,11 +167,9 @@ class Line:
             return False
 
     def intersect_point(self, other):
-        # sanity checks ------------------------------------------------------------- #
         if type(other) != type(self):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         if not self.intersect(other):
             return False
 
@@ -262,9 +186,16 @@ class Line:
             self.__start.y + value * (self.__end.y - self.__start.y),
         )
 
+    def length(self):
+        return math.sqrt(
+            (self.__end.x - self.__start.x) ** 2 + (self.__end.y - self.__start.y) ** 2
+        )
+
+    def middle(self):
+        return Vector(*(self.start + self.end) / 2)
+
     def normal(self, start):
-        # functionality ------------------------------------------------------------- #
-        angle = self.gradient
+        angle = self.gradient()
 
         if angle > math.radians(90):
             angle += math.radians(-180)
@@ -277,8 +208,44 @@ class Line:
 
         return Line(start, end)
 
+    def rect(self):
+        sort = self.sorted_x()
+
+        sort.start.snap(1)
+        sort.end.snap(1)
+
+        if sort.gradient() == 0:
+            left = sort.start.x
+            width = sort.end.x - sort.start.x + 1
+            top = (sort.start.y - self.__width // 2) - (self.__width % 2 - 1)
+            height = self.__width
+        else:
+            if not abs(sort.start.x - sort.end.x) <= abs(sort.start.y - sort.end.y):
+                if sort.gradient() > 0:
+                    left = sort.start.x
+                    width = sort.end.x - left + 1
+                    top = (sort.start.y - self.__width // 2) - (self.__width % 2 - 1)
+                    height = sort.end.y - top + self.__width // 2 + 1
+                else:
+                    left = sort.start.x
+                    width = sort.end.x - left + 1
+                    top = (sort.end.y - self.__width // 2) - (self.__width % 2 - 1)
+                    height = sort.start.y - top + self.__width // 2 + 1
+            else:
+                if sort.gradient() > 0:
+                    left = (sort.start.x - self.__width // 2) - (self.__width % 2 - 1)
+                    width = sort.end.x - left + self.__width // 2 + 1
+                    top = sort.start.y
+                    height = sort.end.y - top + 1
+                else:
+                    left = (sort.start.x - self.__width // 2) - (self.__width % 2 - 1)
+                    width = sort.end.x - left + self.__width // 2 + 1
+                    top = sort.end.y
+                    height = sort.start.y - top + 1
+
+        return Rect(left, top, width, height)
+
     def reflect(self, plane, magnitude=None):
-        # functionality ------------------------------------------------------------- #
         if not self.intersect(plane):
             return False
 
@@ -286,19 +253,17 @@ class Line:
             magnitude = self.length
 
         start = self.intersect_point(plane)
-        angle = plane.gradient + math.radians(90) + self.angle_to_normal(plane)
+        angle = plane.gradient() + math.radians(90) + self.angle_to_normal(plane)
         end = Vector(start.x - 1 * magnitude, start.y).rotate_around(angle, start)
 
         return Line(start, end)
 
     def reflect_vector(self, plane, magnitude=None):
-        # functionality ------------------------------------------------------------- #
         reflected = self.reflect(plane, magnitude)
 
         return reflected.end - reflected.start
 
     def side(self, point):
-        # functionality ------------------------------------------------------------- #
         sort = self.sorted_y()
 
         vec_1 = Vector(sort.end.x - sort.start.x, sort.end.y - sort.start.y)
@@ -322,28 +287,24 @@ class Line:
             return 0
 
     def sort_x(self):
-        # functionality ------------------------------------------------------------- #
         sort_x = self.sorted_x()
 
         self.__start = sort_x.start
         self.__end = sort_x.end
 
     def sorted_x(self):
-        # functionality ------------------------------------------------------------- #
         if self.__start.x > self.__end.x:
             return Line(self.__end, self.__start)
 
         return self
 
     def sort_y(self):
-        # functionality ------------------------------------------------------------- #
         sort_y = self.sorted_x()
 
         self.__start = sort_y.start
         self.__end = sort_y.end
 
     def sorted_y(self):
-        # functionality ------------------------------------------------------------- #
         if self.__start.y > self.__end.y:
             return Line(self.__end, self.__start)
 

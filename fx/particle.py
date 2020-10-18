@@ -39,33 +39,27 @@ class Particle:
     # properties -------------------------------------------------------------------- #
     @property
     def centre(self):
-        # functionality ------------------------------------------------------------- #
         return self.__centre
 
     @centre.setter
     def centre(self, centre):
-        # sanity checks ------------------------------------------------------------- #
         if type(centre) != type(Vector()):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         self.__centre = centre
 
     @property
     def colour(self):
-        # functionality ------------------------------------------------------------- #
         return self.__colour
 
     @colour.setter
     def colour(self, colour):
-        # sanity checks ------------------------------------------------------------- #
         if type(colour) not in (list, tuple):
             raise TypeError
 
         if len(colour) != 3:
             raise Exception
 
-        # functionality ------------------------------------------------------------- #
         if type(colour) != tuple:
             colour = tuple(colour)
 
@@ -73,43 +67,35 @@ class Particle:
 
     @property
     def fade(self):
-        # functionality ------------------------------------------------------------- #
         return self.__fade
 
     @fade.setter
     def fade(self, fade):
-        # sanity checks ------------------------------------------------------------- #
         if type(fade) != bool:
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         self.__fade = fade
 
     @property
     def life(self):
-        # functionality ------------------------------------------------------------- #
         return self.__life
 
     @life.setter
     def life(self, life):
-        # sanity checks ------------------------------------------------------------- #
         if type(life) not in (float, int):
             raise TypeError
 
         if life < 0:
             raise Exception
 
-        # functionality ------------------------------------------------------------- #
         self.__life = life
 
     @property
     def lower(self):
-        # functionality ------------------------------------------------------------- #
         return self.__lower
 
     @lower.setter
     def lower(self, lower):
-        # sanity checks ------------------------------------------------------------- #
         if type(lower) not in (float, int):
             raise TypeError
 
@@ -119,7 +105,6 @@ class Particle:
         except AttributeError:
             pass
 
-        # functionality ------------------------------------------------------------- #
         if type(lower) != int:
             lower = int(lower)
 
@@ -127,16 +112,13 @@ class Particle:
 
     @property
     def radius(self):
-        # functionality ------------------------------------------------------------- #
         return self.__radius
 
     @radius.setter
     def radius(self, radius):
-        # sanity checks ------------------------------------------------------------- #
         if type(radius) not in (float, int):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         if type(radius) != float:
             radius = float(radius)
 
@@ -144,19 +126,16 @@ class Particle:
 
     @property
     def rate(self):
-        # functionality ------------------------------------------------------------- #
         return self.__rate
 
     @rate.setter
     def rate(self, rate):
-        # sanity checks ------------------------------------------------------------- #
         if type(rate) not in (float, int):
             raise TypeError
 
         if rate < 0:
             raise Exception
 
-        # functionality ------------------------------------------------------------- #
         if type(rate) != float:
             rate = float(rate)
 
@@ -164,16 +143,13 @@ class Particle:
 
     @property
     def speed(self):
-        # functionality ------------------------------------------------------------- #
         return self.__speed
 
     @speed.setter
     def speed(self, speed):
-        # sanity checks ------------------------------------------------------------- #
         if type(speed) not in (float, int):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         if type(speed) != float:
             speed = float(speed)
 
@@ -181,12 +157,10 @@ class Particle:
 
     @property
     def upper(self):
-        # functionality ------------------------------------------------------------- #
         return self.__upper
 
     @upper.setter
     def upper(self, upper):
-        # sanity checks ------------------------------------------------------------- #
         if type(upper) not in (float, int):
             raise TypeError
 
@@ -196,7 +170,6 @@ class Particle:
         except AttributeError:
             pass
 
-        # functionality ------------------------------------------------------------- #
         if type(upper) != int:
             upper = int(upper)
 
@@ -204,14 +177,12 @@ class Particle:
 
     # methods ----------------------------------------------------------------------- #
     def draw(self, surface, delta, offset=Vector(0, 0)):
-        # sanity checks ------------------------------------------------------------- #
         if type(surface) != type(pygame.Surface([0, 0])):
             raise TypeError
 
         if type(delta) not in (float, int):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         for child in self.__children:
             child.draw(surface)
 
@@ -254,7 +225,6 @@ class Child(Circle):
 
     # methods ----------------------------------------------------------------------- #
     def update(self, delta):
-        # functionality ------------------------------------------------------------- #
         decay = (1 / delta) / self.life
 
         if self.fade:

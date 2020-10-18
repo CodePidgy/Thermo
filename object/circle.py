@@ -22,16 +22,13 @@ class Circle:
     # properties -------------------------------------------------------------------- #
     @property
     def alpha(self):
-        # functionality ------------------------------------------------------------- #
         return self.__alpha
 
     @alpha.setter
     def alpha(self, alpha):
-        # sanity checks ------------------------------------------------------------- #
         if type(alpha) not in (float, int):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         if type(alpha) != int:
             alpha = int(alpha)
 
@@ -39,33 +36,27 @@ class Circle:
 
     @property
     def centre(self):
-        # functionality ------------------------------------------------------------- #
         return self.__centre
 
     @centre.setter
     def centre(self, centre):
-        # sanity checks ------------------------------------------------------------- #
         if type(centre) != type(Vector()):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         self.__centre = centre
 
     @property
     def colour(self):
-        # functionality ------------------------------------------------------------- #
         return self.__colour
 
     @colour.setter
     def colour(self, colour):
-        # sanity checks ------------------------------------------------------------- #
         if type(colour) not in (list, tuple):
             raise TypeError
 
         if len(colour) > 4 or len(colour) < 3:
             raise Exception
 
-        # functionality ------------------------------------------------------------- #
         if type(colour) != tuple:
             colour = tuple(colour)
 
@@ -79,57 +70,38 @@ class Circle:
 
     @property
     def radius(self):
-        # functionality ------------------------------------------------------------- #
         return self.__radius
 
     @radius.setter
     def radius(self, radius):
-        # sanity checks ------------------------------------------------------------- #
         if type(radius) not in (float, int):
             raise Exception
 
-        # functionality ------------------------------------------------------------- #
         if type(radius) != float:
             radius = float(radius)
 
         self.__radius = radius
 
     @property
-    def rect(self):
-        # functionality ------------------------------------------------------------- #
-        return Rect(
-            self.x - self.__radius,
-            self.y - self.__radius,
-            self.__radius * 2,
-            self.__radius * 2,
-        )
-
-    @property
     def width(self):
-        # functionality ------------------------------------------------------------- #
         return self.__width
 
     @width.setter
     def width(self, width):
-        # sanity checks ------------------------------------------------------------- #
         if type(width) != int:
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         self.__width = width
 
     @property
     def x(self):
-        # functionality ------------------------------------------------------------- #
         return self.__centre.x
 
     @x.setter
     def x(self, x):
-        # sanity checks ------------------------------------------------------------- #
         if type(x) not in (float, int):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         if type(x) != float:
             x = float(x)
 
@@ -137,16 +109,13 @@ class Circle:
 
     @property
     def y(self):
-        # functionality ------------------------------------------------------------- #
         return self.__centre.y
 
     @y.setter
     def y(self, y):
-        # sanity checks ------------------------------------------------------------- #
         if type(y) not in (float, int):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         if type(y) != float:
             y = float(y)
 
@@ -154,15 +123,21 @@ class Circle:
 
     # methods ----------------------------------------------------------------------- #
     def draw(self, surface, offset=Vector(0, 0)):
-        # sanity checks ------------------------------------------------------------- #
         if type(surface) != type(pygame.Surface([0, 0])):
             raise TypeError
 
-        # functionality ------------------------------------------------------------- #
         pygame.draw.circle(
             surface,
             [*self.__colour, max(self.__alpha, 0)],
             [*(self.centre + offset)],
             self.__radius,
             self.__width,
+        )
+
+    def rect(self):
+        return Rect(
+            self.x - self.__radius,
+            self.y - self.__radius,
+            self.__radius * 2,
+            self.__radius * 2,
         )
