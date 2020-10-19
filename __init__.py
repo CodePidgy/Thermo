@@ -5,6 +5,6 @@ from .vector import Vector
 from .fx import Particle
 
 # object  --------------------------------------------------------------------------- #
-from .object import Circle
-from .object import Line
-from .object import Rect
+from .shape import Circle
+from .shape import Line
+from .shape import Rect

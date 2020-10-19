@@ -4,7 +4,7 @@ import random
 
 import pygame
 
-from ..object import Circle
+from ..shape import Circle
 from ..vector import Vector
 
 
