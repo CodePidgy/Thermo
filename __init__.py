@@ -8,3 +8,4 @@ from .fx import Particle
 from .shape import Circle
 from .shape import Line
 from .shape import Rect
+from .shape import Triangle

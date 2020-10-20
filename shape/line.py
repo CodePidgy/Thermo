@@ -286,6 +286,20 @@ class Line:
         else:
             return 0
 
+    def snap(self, other):
+        snap = self.snapped(other)
+
+        self.__end = snap.end
+        self.__start = snap.start
+
+    def snapped(self, other):
+        return Line(
+            self.__start.snapped(other),
+            self.__end.snapped(other),
+            self.__colour,
+            self.__width,
+        )
+
     def sort_x(self):
         sort_x = self.sorted_x()
 
