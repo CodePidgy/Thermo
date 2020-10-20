@@ -115,8 +115,8 @@ class Line:
         pygame.draw.line(
             surface,
             [*self.__colour, max(self.__alpha, 0)],
-            [*(self.__start + offset)],
-            [*(self.__end + offset)],
+            [*self.__start + offset],
+            [*self.__end + offset],
             self.__width,
         )
 
